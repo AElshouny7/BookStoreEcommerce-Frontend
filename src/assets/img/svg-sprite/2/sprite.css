@@ -1,0 +1,85 @@
+.icon {
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-image: url(sprite.svg);
+}
+.icon-icon_Dashboard_HiFi-M_Active {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: 0 0;
+}
+.icon-icon_Dashboard_HiFi-M_InActive {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: -48px 0;
+}
+.icon-icon_GamePlan_HiFi-M_Active {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: -96px 0;
+}
+.icon-icon_GamePlan_HiFi-M_InActive {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: -144px 0;
+}
+.icon-icon_Messages_HiFi-M_Active {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: -192px 0;
+}
+.icon-icon_Messages_HiFi-M_Active-1 {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: -240px 0;
+}
+.icon-icon_Players_HiFi-M_Active {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: -288px 0;
+}
+.icon-icon_Players_HiFi-M_Inactive {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: -336px 0;
+}
+.icon-icon_Points_HiFi-M_Active {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: -384px 0;
+}
+.icon-icon_Points_HiFi-M_Inactive {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: -432px 0;
+}
+.icon-icon_Profile_HiFi-M_Active {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: -480px 0;
+}
+.icon-icon_Profile_HiFi-M_Inactive {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: -528px 0;
+}
+.icon-icon_Settings_HiFi-M_Active {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: -576px 0;
+}
+.icon-icon_Settings_HiFi-M_Inactive {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: -624px 0;
+}
+.icon-icon_home_HiFi-M_Active {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: -672px 0;
+}
+.icon-icon_home_HiFi-M_Inactive {
+  inline-size: 32px;
+  block-size: 32px;
+  background-position: -720px 0;
+}

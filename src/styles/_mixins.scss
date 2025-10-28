@@ -1,0 +1,38 @@
+@include media-breakpoint-down(xs) {
+  //Players Page==============
+  .status-tabs {
+    display: flex;
+    flex-direction: column;
+  }
+  .table-actions {
+    display: flex;
+    flex-direction: row;
+  }
+  //End=====================
+  //Messages Page==============
+  .messages-container .list-group .list-group-item .flex-item {
+    padding: 0 .5rem !important;
+
+}
+.levels-container .list-group .list-group-item {
+    padding:1rem 0 !important;
+    .d-flex{
+        flex-wrap: wrap;
+    }
+}
+//End=====================
+}
+@include media-breakpoint-down(sm) {
+   //messages Page==============
+   .levels-container .list-group .list-group-item .flex-item {
+    padding-inline-end:1rem !important;
+}
+//End=====================
+}
+@include media-breakpoint-down(lg) {
+     //messages Page==============
+     .levels-container .list-group .list-group-item .flex-item {
+        padding-inline-end:1rem !important;
+    }
+    //End=====================
+}

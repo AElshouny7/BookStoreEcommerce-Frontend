@@ -1,0 +1,17 @@
+//custom variables
+$big-title: 1rem;//16px
+$title: 	0.875rem; //14px
+$parag: .8rem;//12px
+$small-parag: 0.625rem;//10px
+//COLORS
+$success:#7CB342;
+$active-success:#71964a;
+$danger:#E7633F;
+// $active-danger:#E7633F;#EC8265;
+$active-danger:#c74e2e;
+$warning:#FFCF48;
+$active-warning:#E8B943;
+
+@mixin txt-bold{
+    font-family: $main-font-semiBold !important;
+  }

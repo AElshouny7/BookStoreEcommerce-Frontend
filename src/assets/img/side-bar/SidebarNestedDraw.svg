@@ -1,0 +1,16 @@
+<svg width="13" height="133" viewBox="0 40 13 133" fill="none" xmlns="http://www.w3.org/2000/svg" dir="rtl">
+ <mask id="path-1-inside-1_890_1909" fill="white">
+ <path d="M0 0H13V84H8C3.58172 84 0 80.4183 0 76V0Z"/>
+ </mask>
+ <path d="M0 0H13H0ZM13 84H0H13ZM8 84C2.47715 84 -2 79.5229 -2 74V0H2V76C2 80.4183 4.68629 84 8 84ZM13 0V84V0Z" fill="#F6F6F6" mask="url(#path-1-inside-1_890_1909)"/>
+ <mask id="path-3-inside-2_890_1909" fill="white">
+ <path d="M0 29H13V37H8C3.58172 37 0 33.4183 0 29Z"/>
+ </mask>
+ <path d="M0 29H13H0ZM13 39H8C2.47715 39 -2 34.5228 -2 29H2C2 32.3137 4.68629 35 8 35H13V39ZM8 39C2.47715 39 -2 34.5228 -2 29H2C2 32.3137 4.68629 35 8 35V39ZM13 29V37V29Z" fill="#F6F6F6" mask="url(#path-3-inside-2_890_1909)"/>
+ <mask id="path-5-inside-3_890_1909" fill="white">
+ <path d="M0 77H13V85H8C3.58172 85 0 81.4183 0 77Z"/>
+ </mask>
+
+ <path d="M0 77H13H0ZM13 87H8C2.47715 87 -2 82.5228 -2 77H2C2 80.3137 4.68629 83 8 83H13V87ZM8 87C2.47715 87 -2 82.5228 -2 77H2C2 80.3137 4.68629 83 8 83V87ZM13 77V85V77Z" fill="#F6F6F6" mask="url(#path-5-inside-3_890_1909)"/>
+
+</svg>

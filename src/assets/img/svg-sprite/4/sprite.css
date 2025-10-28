@@ -1,0 +1,105 @@
+.icon {
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-image: url(sprite.svg);
+}
+.icon-icon_home_HiFi-M_Inactive_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: 0 0;
+}
+.icon-icon_home_HiFi-M_Active_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -40px 0;
+}
+.icon-icon_Settings_HiFi-M_Inactive_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -80px 0;
+}
+.icon-icon_Settings_HiFi-M_Active_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -120px 0;
+}
+.icon-icon_Profile_HiFi-M_Inactive_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -160px 0;
+}
+.icon-icon_Profile_HiFi-M_Active_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -200px 0;
+}
+.icon-icon_Points_HiFi-M_Inactive_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -240px 0;
+}
+.icon-icon_Points_HiFi-M_Active_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -280px 0;
+}
+.icon-icon_Players_HiFi-M_Inactive_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -320px 0;
+}
+.icon-icon_Players_HiFi-M_Active_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -360px 0;
+}
+.icon-icon_Messages_HiFi-Inactive_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -400px 0;
+}
+.icon-icon_Messages_HiFi-M_Active_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -440px 0;
+}
+.icon-icon_GamePlan_HiFi-M_InActive_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -480px 0;
+}
+.icon-icon_GamePlan_HiFi-M_Active_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -520px 0;
+}
+.icon-icon_Dashboard_HiFi-M_InActive_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -560px 0;
+}
+.icon-icon_Dashboard_HiFi-M_Active_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -600px 0;
+}
+.icon-icon_accounts_HiFi-M_InActive_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: 0 -40px;
+}
+.icon-icon_accounts_HiFi-M_Active_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -40px -40px;
+}
+.icon-icon_Notifications_HiFi-M_Inactive_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -80px -40px;
+}
+.icon-icon_Notifications_HiFi-M_Active_24 {
+  inline-size: 24px;
+  block-size: 24px;
+  background-position: -120px -40px;
+}

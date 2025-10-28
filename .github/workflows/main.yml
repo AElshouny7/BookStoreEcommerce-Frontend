@@ -1,0 +1,33 @@
+# Abdelrahman Elshouny
+name: Gameball Commit Notification
+
+on:
+  push:
+    branches:
+      - main
+    # You can customize which branches trigger this action
+
+jobs:
+  notify-gameball:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Send commit event to Gameball
+        run: |
+          curl -X POST https://api.gameball.co/api/v4.1/integrations/events \
+            -H "Content-Type: application/json" \
+            -H "apiKey: 75c8dee2aa2c424e88916cec6fe64bf9" \
+            -H "secretKey: 565d93308783484282e74e7e7a30a0b6" \
+            -d '{
+              "customerId": "u09l5p7gf4l",
+              "events": {
+                "commit_pushed": {}
+              }
+            }'
+
+      - name: Check response
+        if: success()
+        run: echo "Successfully sent commit notification to Gameball"

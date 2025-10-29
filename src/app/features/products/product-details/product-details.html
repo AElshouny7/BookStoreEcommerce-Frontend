@@ -1,1 +1,21 @@
-<p>product-details works!</p>
+<section class="container">
+  <a routerLink="/products" class="back">← Back to products</a>
+
+  @if (product$ | async; as p) { @if (p) {
+  <div class="layout">
+    <div class="image">
+      <img [src]="p.imageUrl || 'https://via.placeholder.com/600x800?text=Book'" [alt]="p.title" />
+    </div>
+    <div class="info">
+      <h1>{{ p.title }}</h1>
+      <div class="price">{{ p.price | currency : 'EGP' : 'symbol' }}</div>
+      <p class="desc">{{ p.description }}</p>
+      <button (click)="buyNow(p)">Buy Now</button>
+    </div>
+  </div>
+  } @else {
+  <div class="empty">Product not found.</div>
+  } } @else {
+  <div class="loading">Loading…</div>
+  }
+</section>

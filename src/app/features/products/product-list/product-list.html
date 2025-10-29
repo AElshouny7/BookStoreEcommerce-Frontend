@@ -1,1 +1,52 @@
-<p>product-list works!</p>
+<section class="container">
+  <h1>Books</h1>
+
+  <!-- Filters -->
+  <div class="filters">
+    <a
+      class="chip"
+      [routerLink]="['/products']"
+      [queryParams]="{}"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      All
+    </a>
+    @for (c of (categories$ | async); track c.id) {
+    <a
+      class="chip"
+      [routerLink]="['/products']"
+      [queryParams]="{ categoryId: c.id }"
+      routerLinkActive="active"
+    >
+      {{ c.name }}
+    </a>
+    }
+  </div>
+
+  <!-- Loading / Error -->
+  @if (isLoading) {
+  <div class="loading">Loading…</div>
+  } @else if (errorMessage) {
+  <div class="error">{{ errorMessage }}</div>
+  } @else {
+  <div class="grid">
+    @for (p of (products$ | async); track p.id) {
+    <a class="card" [routerLink]="['/products', p.id]">
+      <div class="image">
+        <img
+          [src]="p.imageUrl || 'https://via.placeholder.com/300x400?text=Book'"
+          [alt]="p.title"
+        />
+      </div>
+      <div class="body">
+        <h3 class="title" [title]="p.title">{{ p.title }}</h3>
+        <div class="price">{{ p.price | currency : 'EGP' : 'symbol' }}</div>
+      </div>
+    </a>
+    } @if ((products$ | async)?.length === 0 && !errorMessage) {
+    <div class="empty">No products found.</div>
+    }
+  </div>
+  }
+</section>

@@ -5,5 +5,15 @@ export const routes: Routes = [
     path: '',
     loadComponent: () => import('./features/home/home').then((m) => m.Home),
   },
+  {
+    path: 'products',
+    loadComponent: () =>
+      import('./features/products/product-list/product-list').then((m) => m.ProductList),
+  },
+  {
+    path: 'products/:id',
+    loadComponent: () =>
+      import('./features/products/product-details/product-details').then((m) => m.ProductDetails),
+  },
   { path: '**', redirectTo: '' },
 ];

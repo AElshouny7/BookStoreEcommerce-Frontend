@@ -6,13 +6,13 @@ import { environment } from '../../../environments/environment';
 export interface PlaceOrderItem {
   productId: number;
   quantity: number;
-  unitPrice?: number; // optional if backend calculates from product
+  unitPrice?: number;
 }
 
 export interface PlaceOrderDto {
   userId?: number; // backend can infer from token if you prefer
   items: PlaceOrderItem[];
-  totalAmount?: number; // backend can compute; leave optional
+  totalAmount?: number;
 }
 
 @Injectable({
@@ -35,7 +35,6 @@ export class Order {
     return this.http.get<Order[]>(this.base, { params });
   }
 
-  // Optional status change/cancel endpoints if your API supports them
   updateStatus(id: number, status: string): Observable<Order> {
     return this.http.patch<Order>(`${this.base}/${id}/status`, { status });
   }

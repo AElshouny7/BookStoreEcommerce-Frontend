@@ -1,1 +1,42 @@
-<p>register works!</p>
+<section class="auth-container">
+  <h1>Register</h1>
+
+  @if (errorMessage) {
+  <div class="error">{{ errorMessage }}</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      Full name
+      <input type="text" formControlName="fullName" placeholder="Jane Doe" />
+    </label>
+    @if (form.controls.fullName.touched && form.controls.fullName.invalid) {
+    <small class="hint">Full name is required.</small>
+    }
+
+    <label>
+      Email
+      <input type="email" formControlName="email" placeholder="you@example.com" />
+    </label>
+    @if (form.controls.email.touched && form.controls.email.invalid) {
+    <small class="hint">Provide a valid email.</small>
+    }
+
+    <label>
+      Password
+      <input type="password" formControlName="password" placeholder="••••••••" />
+    </label>
+    @if (form.controls.password.touched && form.controls.password.invalid) {
+    <small class="hint">Min length 8 characters.</small>
+    }
+
+    <button type="submit" [disabled]="loading">
+      @if (loading) { Creating account… } @else { Create account }
+    </button>
+  </form>
+
+  <p class="alt">
+    Already have an account?
+    <a routerLink="/login" [queryParams]="{ returnUrl: returnUrl }">Login</a>
+  </p>
+</section>

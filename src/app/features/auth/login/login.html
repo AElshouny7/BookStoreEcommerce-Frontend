@@ -1,1 +1,34 @@
-<p>login works!</p>
+<section class="auth-container">
+  <h1>Login</h1>
+
+  @if (errorMessage) {
+  <div class="error">{{ errorMessage }}</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      Email
+      <input type="email" formControlName="email" placeholder="you@example.com" />
+    </label>
+    @if (form.controls.email.touched && form.controls.email.invalid) {
+    <small class="hint">Provide a valid email.</small>
+    }
+
+    <label>
+      Password
+      <input type="password" formControlName="password" placeholder="••••••••" />
+    </label>
+    @if (form.controls.password.touched && form.controls.password.invalid) {
+    <small class="hint">Min length 8 characters.</small>
+    }
+
+    <button type="submit" [disabled]="loading">
+      @if (loading) { Signing in… } @else { Login }
+    </button>
+  </form>
+
+  <p class="alt">
+    Don’t have an account?
+    <a routerLink="/register" [queryParams]="{ returnUrl: returnUrl }">Register</a>
+  </p>
+</section>

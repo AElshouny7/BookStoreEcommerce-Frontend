@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, tap } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 
 interface LoginDto {
@@ -37,20 +37,17 @@ export class AuthService {
   currentUser$ = this.currentUserSubject.asObservable();
 
   login(credentials: LoginDto) {
-    return this.http.post<{ token: string }>(`${this.baseUrl}/login`, credentials).subscribe({
-      next: (res) => {
+    return this.http.post<{ token: string }>(`${this.baseUrl}/login`, credentials).pipe(
+      tap((res) => {
         const token = res.token;
         this.saveToken(token);
         this.updateAuthState(token);
-      },
-      error: (err) => {
-        console.error('Login failed', err);
-      },
-    });
+      })
+    );
   }
 
   register(dto: RegisterDto) {
-    return this.http.post(`${this.baseUrl}/register`, dto);
+    return this.http.post<{ token?: string }>(`${this.baseUrl}/register`, dto);
   }
 
   logout() {

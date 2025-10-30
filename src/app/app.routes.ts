@@ -1,7 +1,30 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth-guard';
+import { adminGuard } from './core/guards/admin-guard';
 
 export const routes: Routes = [
+  {
+    path: 'admin',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./features/admin/admin-dashboard/admin-dashboard').then((m) => m.AdminDashboard),
+    children: [
+      {
+        path: 'products',
+        loadComponent: () =>
+          import('./features/admin/admin-products/admin-products').then((m) => m.AdminProducts),
+      },
+      {
+        path: 'categories',
+        loadComponent: () =>
+          import('./features/admin/admin-categories/admin-categories').then(
+            (m) => m.AdminCategories
+          ),
+      },
+      { path: '', redirectTo: 'products', pathMatch: 'full' },
+    ],
+  },
+
   {
     path: '',
     loadComponent: () =>

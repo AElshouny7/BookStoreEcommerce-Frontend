@@ -1,0 +1,31 @@
+<section class="admin-section">
+  <h2>Products</h2>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <input formControlName="title" placeholder="Title" />
+    <input formControlName="imageUrl" placeholder="Image URL" />
+    <input type="number" formControlName="price" placeholder="Price" />
+    <textarea formControlName="description" placeholder="Description"></textarea>
+    <input type="number" formControlName="stockQuantity" placeholder="Stock" />
+    <input type="number" formControlName="categoryId" placeholder="Category ID" />
+
+    <button type="submit">{{ editingId ? 'Update' : 'Add' }}</button>
+    <button type="button" (click)="form.reset(); editingId = null">Clear</button>
+  </form>
+
+  <hr />
+
+  @if (loading) {
+  <p>Loading...</p>
+  } @else {
+  <ul>
+    @for (p of products; track p.id) {
+    <li>
+      <b>{{ p.title }}</b> – {{ p.price | currency : ' EGP' }}
+      <button (click)="edit(p)">Edit</button>
+      <button (click)="delete(p.id)">Delete</button>
+    </li>
+    }
+  </ul>
+  }
+</section>

@@ -38,9 +38,10 @@ export class Login {
       .login(this.form.value as any)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
-        next: () => this.router.navigateByUrl(this.returnUrl),
+        next: () => {
+          setTimeout(() => this.router.navigateByUrl(this.returnUrl), 100);
+        },
         error: (err) => {
-          // Adjust based on your backend error shape
           this.errorMessage = err?.error?.message || 'Invalid email or password.';
         },
       });

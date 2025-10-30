@@ -1,0 +1,22 @@
+<section class="admin-section">
+  <h2>Categories</h2>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <input formControlName="name" placeholder="Name" />
+    <textarea formControlName="description" placeholder="Description"></textarea>
+    <button type="submit">{{ editingId ? 'Update' : 'Add' }}</button>
+    <button type="button" (click)="form.reset(); editingId = null">Clear</button>
+  </form>
+
+  <hr />
+
+  <ul>
+    @for (c of categories; track c.id) {
+    <li>
+      <b>{{ c.name }}</b> – {{ c.description }}
+      <button (click)="edit(c)">Edit</button>
+      <button (click)="delete(c.id)">Delete</button>
+    </li>
+    }
+  </ul>
+</section>

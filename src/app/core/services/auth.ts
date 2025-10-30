@@ -25,6 +25,10 @@ interface DecodedToken {
   providedIn: 'root',
 })
 export class AuthService {
+  private readonly MS_ROLE = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+  private readonly MS_EMAIL = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress';
+  private readonly MS_NAME = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
+
   private http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiBaseUrl}/auth`;
   private readonly tokenKey = 'access_token';
@@ -71,8 +75,7 @@ export class AuthService {
     const decoded = this.decodeToken(token);
 
     if (decoded && !this.isTokenExpired(decoded)) {
-      this.isAuthenticatedSubject.next(true);
-      this.currentUserSubject.next(decoded);
+      this.updateAuthState(token);
     } else {
       this.logout(); // clear expired token
     }
@@ -99,7 +102,22 @@ export class AuthService {
     const decoded = this.decodeToken(token);
     if (!decoded) return;
 
+    // handle Microsoft-style role claim (Fixing Policies)
+    const role = decoded[this.MS_ROLE] || decoded['role'] || 'User';
+
+    const email = decoded[this.MS_EMAIL] || decoded.sub || '';
+
+    const name = decoded[this.MS_NAME] || email;
+
+    const user = {
+      name,
+      email,
+      role,
+    };
+
+    console.log('Decoded user:', user);
+
     this.isAuthenticatedSubject.next(true);
-    this.currentUserSubject.next(decoded);
+    this.currentUserSubject.next(user);
   }
 }

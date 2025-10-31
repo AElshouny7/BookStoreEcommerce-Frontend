@@ -4,7 +4,7 @@
   @if (product$ | async; as p) { @if (p) {
   <div class="layout">
     <div class="image">
-      <img [src]="p.imageUrl || 'https://via.placeholder.com/600x800?text=Book'" [alt]="p.title" />
+      <img [src]="p.imageURL || 'https://via.placeholder.com/600x800?text=Book'" [alt]="p.title" />
     </div>
     <div class="info">
       <h1>{{ p.title }}</h1>

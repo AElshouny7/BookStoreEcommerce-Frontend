@@ -34,6 +34,8 @@ export class ProductDetails implements OnInit {
           return of(null);
         }
 
+        console.log(this.product$);
+
         return this.productsApi.getById(id).pipe(
           tap(() => (this.isLoading = false)),
           catchError((err) => {

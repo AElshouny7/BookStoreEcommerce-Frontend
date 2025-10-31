@@ -1,1 +1,55 @@
-<p>navbar works!</p>
+<header class="nav">
+  <a class="brand" routerLink="/" (click)="closeMenu()">
+    <span class="logo" aria-hidden="true">📚</span>
+    <span class="title">Book Store</span>
+  </a>
+
+  <nav class="links">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+    <!-- add other public links later -->
+  </nav>
+
+  <div class="actions">
+    @if (user$ | async; as user) {
+    <span class="greet">Hi, {{ user.name }}</span>
+
+    <button
+      class="icon-btn"
+      type="button"
+      aria-haspopup="menu"
+      [attr.aria-expanded]="menuOpen"
+      (click)="toggleMenu()"
+    >
+      <!-- user icon (SVG) -->
+      <svg viewBox="0 0 24 24" class="avatar" aria-hidden="true">
+        <circle cx="12" cy="8" r="4"></circle>
+        <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+      </svg>
+    </button>
+
+    @if (menuOpen) {
+    <ul class="menu" role="menu" (mouseleave)="closeMenu()">
+      <li role="menuitem">
+        <button type="button" (click)="goOrders()">My Orders</button>
+      </li>
+      @if (user.role?.toLowerCase() === 'admin') {
+      <li role="menuitem">
+        <button type="button" (click)="goAdmin()">Admin Panel</button>
+      </li>
+      }
+      <li role="menuitem">
+        <button type="button" (click)="logout()">Logout</button>
+      </li>
+    </ul>
+    } } @else {
+    <!-- Not logged in -->
+    <button class="icon-btn" type="button" (click)="goLogin()">
+      <svg viewBox="0 0 24 24" class="avatar" aria-hidden="true">
+        <circle cx="12" cy="8" r="4"></circle>
+        <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+      </svg>
+      <span class="login-text">Login</span>
+    </button>
+    }
+  </div>
+</header>

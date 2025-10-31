@@ -4,7 +4,9 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ProductService } from '../../../core/services/product';
 import { Product } from '../../../core/models/product';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { CategoryService } from '../../../core/services/category';
+import { Category } from '../../../core/models/category';
 
 @Component({
   selector: 'app-admin-products',
@@ -15,14 +17,16 @@ import { tap } from 'rxjs';
 export class AdminProducts {
   private fb = inject(FormBuilder);
   private productApi = inject(ProductService);
+  private categoryApi = inject(CategoryService);
 
   products: Product[] = [];
   loading = false;
+  categories$: Observable<Category[]> = this.categoryApi.getAll();
   editingId: number | null = null;
 
   form = this.fb.group({
     title: ['', Validators.required],
-    imageUrl: [''],
+    imageURL: [''],
     price: [0, [Validators.required, Validators.min(0)]],
     description: [''],
     stockQuantity: [0, [Validators.required, Validators.min(0)]],
@@ -61,11 +65,31 @@ export class AdminProducts {
 
   edit(p: Product) {
     this.editingId = p.id;
-    this.form.patchValue(p);
+    this.form.patchValue({
+      title: p.title,
+      imageURL: p.imageURL ?? '',
+      price: p.price,
+      description: p.description ?? '',
+      stockQuantity: p.stockQuantity ?? 0,
+      categoryId: p.categoryId, // <-- select shows the category
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   delete(id: number) {
     if (!confirm('Are you sure?')) return;
     this.productApi.delete(id).subscribe(() => this.fetchProducts());
+  }
+
+  clearForm() {
+    this.form.reset({
+      title: '',
+      imageURL: '',
+      price: 0,
+      description: '',
+      stockQuantity: 0,
+      categoryId: null,
+    });
+    this.editingId = null;
   }
 }

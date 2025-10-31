@@ -30,12 +30,12 @@
   } @else if (errorMessage) {
   <div class="error">{{ errorMessage }}</div>
   } @else {
-  <div class="grid">
+  <div class="flex">
     @for (p of (products$ | async); track p.id) {
     <a class="card" [routerLink]="['/products', p.id]">
       <div class="image">
         <img
-          [src]="p.imageUrl || 'https://via.placeholder.com/300x400?text=Book'"
+          [src]="p.imageURL || 'https://via.placeholder.com/300x400?text=Book'"
           [alt]="p.title"
         />
       </div>

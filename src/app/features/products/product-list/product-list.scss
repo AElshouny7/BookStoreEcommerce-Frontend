@@ -17,9 +17,9 @@
   color: #b00020;
 }
 .layout {
-  display: grid;
+  display: flex;
   gap: 1.5rem;
-  grid-template-columns: 1fr 1fr;
+  flex: auto;
   align-items: start;
 }
 .image img {
@@ -50,6 +50,6 @@ button {
 }
 @media (max-width: 800px) {
   .layout {
-    grid-template-columns: 1fr;
+    flex: auto;
   }
 }

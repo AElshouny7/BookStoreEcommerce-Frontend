@@ -9,7 +9,7 @@ import { authInterceptor } from './core/interceptors/auth-interceptor';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Navbar],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   standalone: true,

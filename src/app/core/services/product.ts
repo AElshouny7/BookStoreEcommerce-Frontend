@@ -11,11 +11,13 @@ export class ProductService {
   private http = inject(HttpClient);
   private base = `${environment.apiBaseUrl}/products`;
 
-  getAll(params?: { categoryId?: number; search?: string }): Observable<Product[]> {
-    let httpParams = new HttpParams();
-    if (params?.categoryId != null) httpParams = httpParams.set('categoryId', params.categoryId);
-    if (params?.search) httpParams = httpParams.set('q', params.search);
-    return this.http.get<Product[]>(this.base, { params: httpParams });
+  getAll(opts?: { categoryId?: number }): Observable<Product[]> {
+    if (opts?.categoryId !== undefined) {
+      return this.http.get<Product[]>(
+        `${environment.apiBaseUrl}/products/category/${opts.categoryId}`
+      );
+    }
+    return this.http.get<Product[]>(this.base);
   }
 
   getById(id: number): Observable<Product> {

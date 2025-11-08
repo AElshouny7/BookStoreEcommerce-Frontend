@@ -1,0 +1,79 @@
+<section class="container">
+  <h1>My Orders</h1>
+
+  <div class="filters">
+    <label>Status</label>
+    <select [ngModel]="status()" (ngModelChange)="status.set($event || undefined); load()">
+      <option [ngValue]="undefined">All</option>
+      <option value="Pending">Pending</option>
+      <option value="Paid">Paid</option>
+      <option value="Shipped">Shipped</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+  </div>
+
+  @if (loading()) {
+  <div class="loading">Loading…</div>
+  } @else if (error()) {
+  <div class="error">{{ error() }}</div>
+  } @else if ((data()?.items?.length ?? 0) === 0) {
+  <div class="empty">You don’t have any orders yet.</div>
+  } @else {
+  <div class="list">
+    @for (o of data()!.items; track o.id) {
+    <a class="order" href (click)="openOrder(o); $event.preventDefault()">
+      <div class="row">
+        <div class="left">
+          <div class="id">#{{ o.id }}</div>
+          <div class="date">{{ o.orderDate | date : 'medium' }}</div>
+          <div class="status">{{ o.status || '—' }}</div>
+        </div>
+        <div class="right">
+          <div class="amount">{{ o.totalAmount | currency : 'EGP' : 'symbol' }}</div>
+          <div class="items">{{ o.orderItems?.length || 0 }} item(s)</div>
+        </div>
+      </div>
+    </a>
+    }
+  </div>
+  } @if (selectedOrder()) {
+  <div class="modal-backdrop" (click)="closeOrder()" aria-hidden="true"></div>
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Order details">
+    <button class="close" type="button" (click)="closeOrder()" aria-label="Close">×</button>
+    <h2>Order #{{ selectedOrder()!.id }}</h2>
+    <div class="meta">
+      <div><strong>Date:</strong> {{ selectedOrder()!.orderDate | date : 'medium' }}</div>
+      <div><strong>Status:</strong> {{ selectedOrder()!.status || '—' }}</div>
+      <div>
+        <strong>Total:</strong> {{ selectedOrder()!.totalAmount | currency : 'EGP' : 'symbol' }}
+      </div>
+    </div>
+    @if (modalLoading()) {
+    <div class="loading">Loading details…</div>
+    } @else if (!(selectedOrder()!.orderItems?.length)) {
+    <div class="empty">No items found.</div>
+    } @else {
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Qty</th>
+          <th>Unit Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (it of selectedOrder()!.orderItems!; track it.productId) {
+        <tr>
+          <td>{{ it.productTitle || '#' + it.productId }}</td>
+          <td>{{ it.quantity }}</td>
+          <td>{{ it.unitPrice | currency : 'EGP' : 'symbol' }}</td>
+          <td>{{ it.totalPrice | currency : 'EGP' : 'symbol' }}</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </div>
+  }
+</section>

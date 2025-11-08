@@ -1,1 +1,90 @@
-<p>checkout works!</p>
+<section class="container">
+  <h1>Checkout</h1>
+
+  @if (OrderItems.length === 0) {
+  <div class="empty">
+    Your checkout list is empty.
+    <a routerLink="/products">Continue shopping</a>
+  </div>
+  } @if (OrderItems.length > 0) {
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th class="left">Product</th>
+          <th>Quantity</th>
+          <th class="right">Price</th>
+          <th class="right">Subtotal</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (it of OrderItems; track it.productId; let i = $index) {
+        <tr>
+          <td class="left">
+            <div class="title">{{ it.title || 'Product ' + it.title }}</div>
+            <div class="muted">ID: {{ it.productId }}</div>
+          </td>
+
+          <td>
+            <input
+              type="number"
+              min="1"
+              [(ngModel)]="it.quantity"
+              (change)="onQtyChange(i)"
+              (blur)="onQtyChange(i)"
+            />
+          </td>
+
+          <td class="right">
+            @if (it.price !== undefined) {
+            <span>{{ it.price | currency : 'EGP' : 'symbol' }}</span>
+            } @else {
+            <span>—</span>
+            }
+          </td>
+
+          <td class="right">
+            @if (it.price !== undefined) {
+            <span>{{ it.price * it.quantity | currency : 'EGP' : 'symbol' }}</span>
+            } @else {
+            <span>—</span>
+            }
+          </td>
+
+          <td>
+            <button class="link danger" (click)="remove(i)">Remove</button>
+          </td>
+        </tr>
+        }
+      </tbody>
+
+      @if (total > 0) {
+      <tfoot>
+        <tr>
+          <td colspan="3" class="right strong">Total</td>
+          <td class="right strong">{{ total | currency : 'EGP' : 'symbol' }}</td>
+          <td></td>
+        </tr>
+      </tfoot>
+      }
+    </table>
+  </div>
+  }
+
+  <!-- API error messages -->
+  @if (errorMsg) {
+  <pre class="error">{{ errorMsg }}</pre>
+  }
+
+  <!-- Actions -->
+  @if (OrderItems.length > 0) {
+  <div class="actions">
+    <a routerLink="/products" class="link">← Continue shopping</a>
+    <button class="primary" (click)="placeOrder()" [disabled]="placing">
+      {{ placing ? 'Placing Order…' : 'Place Order' }}
+    </button>
+  </div>
+  }
+</section>

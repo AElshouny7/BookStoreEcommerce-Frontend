@@ -1,0 +1,106 @@
+.container {
+  max-width: 900px; // keeps line lengths reasonable
+  margin: 2rem auto; // center on page with top/bottom spacing
+  padding: 0 1rem; // horizontal breathing room
+}
+
+h1 {
+  margin-bottom: 1rem; // space under the title
+}
+
+.card {
+  background: #fff; // white card background
+  border: 1px solid #e5e7eb; // light border
+  border-radius: 12px; // soft rounded corners
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); // subtle elevation
+  overflow: hidden; // round table corners too
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse; // clean table lines
+}
+
+th,
+td {
+  padding: 0.75rem 1rem; // comfortable hit targets
+  border-bottom: 1px solid #f1f5f9; // row separators
+}
+
+th.left,
+td.left {
+  text-align: left;
+}
+th.right,
+td.right {
+  text-align: right;
+}
+.strong {
+  font-weight: 600;
+}
+.muted {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+input[type='number'] {
+  width: 90px;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.link {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: #2563eb; // primary link color
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.link.danger {
+  color: #dc2626;
+} // red for destructive action
+
+.actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.primary {
+  background: #111827; // dark primary button
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+}
+
+.primary[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  white-space: pre-wrap; // preserve newlines from the error text
+  background: #fff7ed; // soft orange background
+  color: #9a3412; // readable brown text
+  border: 1px solid #fed7aa; // border matching the background
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+}
+
+.empty {
+  padding: 1rem 0;
+}
+
+.uid {
+  margin: 1rem 0;
+  display: grid;
+  gap: 0.35rem;
+  max-width: 220px;
+}

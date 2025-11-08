@@ -6,11 +6,42 @@
     <div class="image">
       <img [src]="p.imageURL || 'https://via.placeholder.com/600x800?text=Book'" [alt]="p.title" />
     </div>
+
     <div class="info">
       <h1>{{ p.title }}</h1>
-      <div class="price">{{ p.price | currency : 'EGP' : 'symbol' }}</div>
+
+      <div class="meta">
+        <div class="price">{{ p.price | currency : 'EGP' : 'symbol' }}</div>
+        <div class="stockQuantity" [class.out]="p.stockQuantity === 0">
+          @if (p.stockQuantity > 0) { In stockQuantity: {{ p.stockQuantity }} } @else { Out of
+          stockQuantity }
+        </div>
+      </div>
+
       <p class="desc">{{ p.description }}</p>
-      <button (click)="buyNow(p)">Buy Now</button>
+
+      @if (p.stockQuantity > 0) {
+      <div class="qty-row">
+        <label for="qty">Quantity</label>
+
+        <div class="stepper">
+          <button type="button" (click)="dec()">−</button>
+          <input
+            id="qty"
+            type="number"
+            [(ngModel)]="quantity"
+            min="1"
+            [max]="p.stockQuantity"
+            (change)="onQtyChange(p.stockQuantity)"
+            (blur)="onQtyChange(p.stockQuantity)"
+          />
+          <button type="button" (click)="inc(p.stockQuantity)">+</button>
+        </div>
+        <small class="hint">Max {{ p.stockQuantity }}</small>
+      </div>
+      }
+
+      <button (click)="buyNow(p)" [disabled]="p.stockQuantity === 0" class="buy">Buy Now</button>
     </div>
   </div>
   } @else {

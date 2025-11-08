@@ -2,40 +2,33 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-
-export interface PlaceOrderItem {
-  productId: number;
-  quantity: number;
-  unitPrice?: number;
-}
-
-export interface PlaceOrderDto {
-  userId?: number; // backend can infer from token if you prefer
-  items: PlaceOrderItem[];
-  totalAmount?: number;
-}
+import { OrderCreateDto } from '../models/orderCreateDto';
+import { Order as OrderModel } from '../models/order';
 
 @Injectable({
   providedIn: 'root',
 })
-export class Order {
+export class OrderService {
   private http = inject(HttpClient);
   private base = `${environment.apiBaseUrl}/orders`;
 
-  placeOrder(dto: PlaceOrderDto): Observable<Order> {
-    return this.http.post<Order>(this.base, dto);
+  placeOrder(dto: OrderCreateDto): Observable<OrderModel> {
+    return this.http.post<OrderModel>(this.base, dto);
   }
 
-  getById(id: number): Observable<Order> {
-    return this.http.get<Order>(`${this.base}/${id}`);
+  getById(id: number): Observable<OrderModel> {
+    return this.http.get<OrderModel>(`${this.base}/${id}`);
   }
 
-  getForUser(userId: number): Observable<Order[]> {
-    const params = new HttpParams().set('userId', userId);
-    return this.http.get<Order[]>(this.base, { params });
+  getForUser(): Observable<OrderModel[]> {
+    return this.http.get<OrderModel[]>(`${this.base}/by-user`);
   }
 
-  updateStatus(id: number, status: string): Observable<Order> {
-    return this.http.patch<Order>(`${this.base}/${id}/status`, { status });
+  updateStatus(id: number, status: string): Observable<OrderModel> {
+    return this.http.patch<OrderModel>(`${this.base}/${id}/status`, { status });
+  }
+
+  createOrder(dto: OrderCreateDto): Observable<OrderModel> {
+    return this.http.post<OrderModel>(`${this.base}`, dto);
   }
 }

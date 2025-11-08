@@ -4,6 +4,6 @@ export interface Product {
   imageURL?: string;
   price: number;
   description?: string;
-  stockQuantity?: number;
+  stockQuantity: number;
   categoryId: number;
 }

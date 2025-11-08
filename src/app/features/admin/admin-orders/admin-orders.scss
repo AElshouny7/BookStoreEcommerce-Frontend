@@ -1,0 +1,52 @@
+.admin-section {
+  h2 {
+    margin: 0 0 1rem;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  table.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #e5e5e5;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  .actions-col,
+  .actions {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .status-select {
+    min-width: 8rem;
+  }
+
+  .muted {
+    color: #666;
+  }
+
+  .error {
+    color: #b00020;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap; /* added line */
+    border: 0;
+  }
+}

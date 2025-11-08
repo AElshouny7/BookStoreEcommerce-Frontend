@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -24,8 +24,14 @@ export class OrderService {
     return this.http.get<OrderModel[]>(`${this.base}/by-user`);
   }
 
+  // Admin: get all orders in the system
+  getAll(): Observable<OrderModel[]> {
+    return this.http.get<OrderModel[]>(this.base);
+  }
+
+  // Admin: update order status using HTTP PUT per backend signature
   updateStatus(id: number, status: string): Observable<OrderModel> {
-    return this.http.patch<OrderModel>(`${this.base}/${id}/status`, { status });
+    return this.http.put<OrderModel>(`${this.base}/${id}/status`, { status });
   }
 
   createOrder(dto: OrderCreateDto): Observable<OrderModel> {

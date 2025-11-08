@@ -19,7 +19,7 @@ export class OrdersList {
 
   loading = signal(false);
   error = signal<string>('');
-  status = signal<string | undefined>(undefined); // "Pending" | "Paid" | "Shipped" | "Cancelled" | undefined
+  status = signal<string | undefined>(undefined); // "Pending" | "Completed" | "Cancelled" | undefined
 
   // Data shape matches your template: data()?.items
   data = signal<{ items: Order[] } | null>(null);

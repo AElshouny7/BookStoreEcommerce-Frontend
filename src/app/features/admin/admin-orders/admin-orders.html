@@ -1,0 +1,52 @@
+<section class="admin-section">
+  <h2>Orders</h2>
+
+  @if (loading()) {
+  <p>Loading…</p>
+  } @else if (error()) {
+  <p class="error">{{ error() }}</p>
+  } @else if (orders().length === 0) {
+  <p class="muted">No orders found.</p>
+  } @else {
+  <div class="table-wrap">
+    <table class="admin-table" role="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">User</th>
+          <th scope="col">Date</th>
+          <th scope="col">Total</th>
+          <th scope="col">Status</th>
+          <th scope="col" class="actions-col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (o of orders(); track o.id) {
+        <tr>
+          <td>#{{ o.id }}</td>
+          <td>{{ o.userId }}</td>
+          <td>{{ o.orderDate | date : 'medium' }}</td>
+          <td>{{ o.totalAmount | currency : 'EGP' : 'symbol' }}</td>
+          <td>
+            <label class="visually-hidden" [attr.for]="'status-' + o.id">Status</label>
+            <select
+              class="status-select"
+              [id]="'status-' + o.id"
+              [ngModel]="selected()[o.id] || o.status || 'Pending'"
+              (ngModelChange)="onChangeStatus(o.id, $event)"
+            >
+              @for (s of statuses; track s) {
+              <option [value]="s">{{ s }}</option>
+              }
+            </select>
+          </td>
+          <td class="actions">
+            <button type="button" (click)="save(o)">Save</button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  }
+</section>

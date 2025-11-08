@@ -21,6 +21,11 @@ export const routes: Routes = [
             (m) => m.AdminCategories
           ),
       },
+      {
+        path: 'orders',
+        loadComponent: () =>
+          import('./features/admin/admin-orders/admin-orders').then((m) => m.AdminOrdersComponent),
+      },
       { path: '', redirectTo: 'products', pathMatch: 'full' },
     ],
   },

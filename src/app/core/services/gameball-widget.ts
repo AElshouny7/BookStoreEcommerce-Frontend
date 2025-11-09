@@ -1,152 +1,108 @@
-import { DOCUMENT, Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
-
-declare global {
-  interface Window {
-    GbSdk?: { init: (config: any) => void };
-    GbLoadInit?: () => void;
-  }
-}
-
-interface GameballPlayerAttributes {
-  displayName?: string;
-  email?: string;
-  firstName?: string;
-  lastName?: string;
-  gender?: 'M' | 'F';
-  dateOfBirth?: string; // ISO yyyy-MM-dd
-  joinDate?: string; // ISO yyyy-MM-dd
-  custom?: Record<string, unknown>;
-}
 
 @Injectable({ providedIn: 'root' })
 export class GameballWidget {
-  private scriptLoaded = false;
-  private scriptLoadingPromise: Promise<void> | null = null;
-  private initializedForUserId: string | null = null;
+  private sdkLoaded = false;
+  private sdkLoading?: Promise<void>;
+  private currentLang = environment.gameball.lang ?? 'en';
 
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  // Expose open/close events to the app (wired to callbacks)
+  readonly widgetOpen$ = new BehaviorSubject<boolean>(false);
+  readonly widgetClose$ = new BehaviorSubject<boolean>(true);
 
-  /**
-   * Loads the Gameball widget script only once. Ensures we define GbLoadInit prior to loading so SDK can auto-init.
-   */
-  private loadScriptOnce(): Promise<void> {
-    if (this.scriptLoaded) return Promise.resolve();
-    if (this.scriptLoadingPromise) return this.scriptLoadingPromise;
+  /** Ensure the SDK script is injected only once */
+  private loadSdk(): Promise<void> {
+    if (this.sdkLoaded) return Promise.resolve();
+    if (this.sdkLoading) return this.sdkLoading;
 
-    this.scriptLoadingPromise = new Promise<void>((resolve, reject) => {
-      // If SDK already available (script loaded elsewhere), short-circuit
-      if (typeof window !== 'undefined' && window.GbSdk) {
-        this.scriptLoaded = true;
-        resolve();
-        return;
-      }
-      const existing = this.document.querySelector(
-        'script[src*="assets.gameball.co/widget/js/gameball-init.min.js"]'
+    this.sdkLoading = new Promise<void>((resolve, reject) => {
+      const existing = document.querySelector(
+        'script[src="https://assets.gameball.co/widget/js/gameball-init.min.js"]'
       ) as HTMLScriptElement | null;
+
       if (existing) {
-        // If script tag is already present
-        if (window.GbSdk || (existing as any)._gbLoaded) {
-          this.scriptLoaded = true;
+        existing.addEventListener('load', () => {
+          this.sdkLoaded = true;
           resolve();
-        } else {
-          existing.addEventListener('load', () => {
-            (existing as any)._gbLoaded = true;
-            this.scriptLoaded = true;
-            resolve();
-          });
-          existing.addEventListener('error', () =>
-            reject(new Error('Gameball script failed to load'))
-          );
-        }
+        });
+        existing.addEventListener('error', (e) => reject(e));
         return;
       }
 
-      const script = this.document.createElement('script');
-      script.src = 'https://assets.gameball.co/widget/js/gameball-init.min.js';
-      script.defer = true;
-      script.async = true;
-      script.addEventListener('load', () => {
-        (script as any)._gbLoaded = true;
-        this.scriptLoaded = true;
+      // Define the global init shim that CDN will call automatically
+      (window as any).GbLoadInit = () => {
+        this.sdkLoaded = true;
         resolve();
-        // In case GbSdk loaded before our GbLoadInit assignment was effective
-        this.invokeInitIfReady();
-      });
-      script.addEventListener('error', () => reject(new Error('Gameball script failed to load')));
-      (this.document.body || this.document.head).appendChild(script);
+      };
+
+      const s = document.createElement('script');
+      s.src = 'https://assets.gameball.co/widget/js/gameball-init.min.js';
+      s.defer = true;
+      s.onerror = (e) => reject(e);
+      document.body.appendChild(s);
     });
 
-    return this.scriptLoadingPromise;
+    return this.sdkLoading;
   }
 
-  /** Initialize widget for guests (no playerUniqueId). */
-  initGuest(): void {
-    if (!environment.showGameballForGuests) return; // Feature flag
-    // Don't override a customer view; guests only if no user
-    if (this.initializedForUserId) return;
-
-    this.defineLoaderFunction({
-      playerUniqueId: '',
-      playerAttributes: {},
-    });
-    this.loadScriptOnce().catch(console.error);
-    this.invokeInitIfReady();
-  }
-
-  /** Initialize / re-initialize widget for a logged-in customer. */
-  initCustomer(userId: string, attrs: GameballPlayerAttributes = {}): void {
-    if (!userId) return;
-    if (this.initializedForUserId === userId) return; // already initialized with same user
-
-    this.initializedForUserId = userId;
-    this.defineLoaderFunction({
-      playerUniqueId: userId,
-      playerAttributes: attrs,
-    });
-    this.loadScriptOnce().catch(console.error);
-    this.invokeInitIfReady();
-  }
-
-  /** Clears current user context and falls back to guest view (if allowed). */
-  resetToGuest(): void {
-    this.initializedForUserId = null;
-    this.initGuest();
-  }
-
-  /** Assigns window.GbLoadInit so Gameball script auto-invokes or we can invoke manually. */
-  private defineLoaderFunction(overrides: {
-    playerUniqueId: string;
-    playerAttributes: GameballPlayerAttributes;
+  /** Generic init - used by guest/customer init */
+  private async init(config: {
+    publicKey?: string;
+    lang?: string;
+    playerUniqueId?: string;
+    playerAttributes?: Record<string, any>;
   }) {
-    const baseConfig = {
-      APIKey: environment.gameballPublicKey,
-      lang: environment.gameballLang,
-      playerUniqueId: overrides.playerUniqueId,
-      playerAttributes: overrides.playerAttributes ?? {},
-      onWidgetOpen: () => {
-        // Hook point for future analytics
-        // console.log('[Gameball] Widget opened');
-      },
-      onWidgetClose: () => {
-        // Hook point for future analytics
-        // console.log('[Gameball] Widget closed');
-      },
-    };
-    window.GbLoadInit = () => {
-      if (!window.GbSdk) return; // Will be retried via invokeInitIfReady once SDK exists
-      window.GbSdk.init(baseConfig);
-    };
+    await this.loadSdk();
+
+    const APIKey = config.publicKey ?? environment.gameball.publicKey;
+    const lang = config.lang ?? this.currentLang;
+
+    // Defensive: if GbSdk is not yet on window (rare), wait one microtask
+    const tryInit = () =>
+      new Promise<void>((resolve) => {
+        Promise.resolve().then(() => {
+          (window as any).GbLoadInit = undefined; // not needed after first load
+          // Re-init is safe; SDK should handle mounted state internally
+          (globalThis as any).GbSdk?.init({
+            APIKey,
+            lang,
+            playerUniqueId: config.playerUniqueId ?? '',
+            playerAttributes: config.playerAttributes ?? {},
+            onWidgetOpen: () => this.widgetOpen$.next(true),
+            onWidgetClose: () => this.widgetClose$.next(true),
+          });
+          resolve();
+        });
+      });
+
+    await tryInit();
   }
 
-  /** Calls GbLoadInit if both script + GbSdk are available. */
-  private invokeInitIfReady() {
-    if (window.GbSdk && window.GbLoadInit) {
-      try {
-        window.GbLoadInit();
-      } catch (e) {
-        console.error('[Gameball] init error', e);
-      }
+  /** Guest view (no player) */
+  initGuest(lang?: string) {
+    this.currentLang = lang ?? this.currentLang;
+    return this.init({ lang: this.currentLang });
+  }
+
+  /** Customer view with required playerUniqueId */
+  initCustomer(playerUniqueId: string, playerAttributes?: Record<string, any>, lang?: string) {
+    this.currentLang = lang ?? this.currentLang;
+    return this.init({
+      lang: this.currentLang,
+      playerUniqueId,
+      playerAttributes,
+    });
+  }
+
+  /** Switch widget language on the fly (re-init with same mode) */
+  async setLanguage(lang: string, currentUser?: { id: string; attributes?: any }) {
+    this.currentLang = lang;
+    if (currentUser?.id) {
+      await this.initCustomer(currentUser.id, currentUser.attributes, lang);
+    } else {
+      await this.initGuest(lang);
     }
   }
 }

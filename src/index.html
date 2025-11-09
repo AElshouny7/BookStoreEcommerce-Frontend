@@ -1,13 +1,28 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Frontend</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Frontend</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  </head>
+  <body>
+    <app-root></app-root>
+
+    <!-- Gameball Widget -->
+    <script>
+      window.GbLoadInit = function () {
+        GbSdk.init({
+          APIKey: '7b97deeb13b346049063de5cf0d48f72',
+          lang: 'en',
+          playerUniqueId: '', // guest
+          playerAttributes: {},
+          onWidgetOpen: () => console.log('🎉 Widget opened!'),
+          onWidgetClose: () => console.log('👋 Widget closed!'),
+        });
+      };
+    </script>
+    <script defer src="https://assets.gameball.co/widget/js/gameball-init.min.js"></script>
+  </body>
 </html>

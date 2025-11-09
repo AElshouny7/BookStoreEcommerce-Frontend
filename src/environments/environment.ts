@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   apiBaseUrl: 'http://localhost:5268/api',
-  gameballPublicKey: 'e8ddd371fe6a49118cbe522da66d5cf6',
+  gameballPublicKey: '7b97deeb13b346049063de5cf0d48f72',
   gameballLang: 'en',
-  showGameballForGuests: true, // set false if you want to hide for guests later
+  showGameballForGuests: true, // false to hide for guests
 };
